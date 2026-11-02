@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>พุทธประวัติ | ส33102 ม.6 โรงเรียนแม่จันวิทยาคม</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Prompt & Kanit -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Prompt', 'Kanit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fcf8ff',
+                            100: '#f4e9ff',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            gold: '#fbbf24',
+                            goldDark: '#d97706'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Prompt', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+    </style>
+</head>
+<body class="h-full bg-gradient-to-br from-indigo-900 via-purple-900 to-amber-900 text-slate-800 flex flex-col min-h-screen">
+
+    <!-- Config Constant -->
+    <script>
+        const CONFIG = {
+            subjectCode: "ส33102",
+            subjectName: "วิชาสังคมศึกษา",
+            gradeLevel: "ชั้นมัธยมศึกษาปีที่ 6",
+            schoolName: "โรงเรียนแม่จันวิทยาคม",
+            webAppUrl: "https://script.google.com/macros/s/AKfycbzXaWtkRlPZNukbKfX9NVucxwvMVJQ3m2AsGAQ4UxGdzme4OXoLfRyqdNrsvnG2WQN7QA/exec"
+        };
+    </script>
+
+    <!-- App Container -->
+    <div id="app" class="flex-1 flex flex-col max-w-4xl w-full mx-auto p-3 sm:p-6 justify-between">
+        
+        <!-- Header / School Badge -->
+        <header class="w-full mb-4">
+            <div class="glass-card rounded-2xl p-4 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-3 border-t-4 border-amber-400">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-400 to-amber-600 flex items-center justify-center text-white text-2xl shadow-lg">
+                        ☸️
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="bg-purple-100 text-purple-700 font-semibold px-2.5 py-0.5 rounded-full text-xs">ส33102</span>
+                            <span class="bg-amber-100 text-amber-800 font-semibold px-2.5 py-0.5 rounded-full text-xs">ม.6</span>
+                        </div>
+                        <h1 class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight mt-0.5">พุทธประวัติ (ประสูติถึงปรินิพพาน)</h1>
+                    </div>
+                </div>
+                <div class="text-center sm:text-right">
+                    <p class="text-xs font-semibold text-indigo-900">โรงเรียนแม่จันวิทยาคม</p>
+                    <button id="soundToggleBtn" onclick="toggleSound()" class="mt-1 text-xs px-2.5 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-600 transition flex items-center gap-1 mx-auto sm:ml-auto">
+                        🔊 <span id="soundStatus">เปิดเสียง</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dynamic Content Area -->
+        <main id="mainContent" class="flex-1 flex flex-col justify-center items-center my-2">
+            
+            <!-- VIEW 1: HOME / REGISTER -->
+            <div id="viewHome" class="w-full max-w-md glass-card rounded-3xl p-6 sm:p-8 shadow-2xl animate-float">
+                <div class="text-center mb-6">
+                    <span class="text-4xl">🏛️</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-2">ทดสอบความรู้พุทธประวัติ</h2>
+                    <p class="text-sm text-slate-500 mt-1">กรอกข้อมูลส่วนตัวเพื่อเริ่มทำแบบทดสอบ</p>
+                </div>
+
+                <form id="registerForm" onsubmit="handleStartGame(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">ชื่อ - นามสกุล</label>
+                        <input type="text" id="inputFullName" required placeholder="เช่น เด็กชายรักเรียน เพียรศึกษา" 
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm bg-white/80">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">ชั้น / ห้อง</label>
+                            <input type="text" id="inputClassroom" required placeholder="เช่น ม.6/1" 
+                                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm bg-white/80">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">เลขที่</label>
+                            <input type="number" id="inputStudentNo" required placeholder="เช่น 15" 
+                                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm bg-white/80">
+                        </div>
+                    </div>
+
+                    <div class="pt-2 flex flex-col gap-2.5">
+                        <button type="submit" class="w-full py-3.5 px-6 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-purple-500/30 transition transform active:scale-95 flex items-center justify-center gap-2">
+                            <span>🚀 เริ่มทำแบบทดสอบ</span>
+                        </button>
+                        <button type="button" onclick="showLeaderboard()" class="w-full py-3 px-6 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition transform active:scale-95 flex items-center justify-center gap-2">
+                            <span>🏆 ตารางคะแนนสูงสุด</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- VIEW 2: GAME SCREEN -->
+            <div id="viewGame" class="w-full hidden flex flex-col gap-4">
+                <!-- Game HUD -->
+                <div class="glass-card rounded-2xl p-3 sm:p-4 shadow-lg flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs bg-purple-100 text-purple-800 px-3 py-1 rounded-lg font-semibold" id="hudUserDisplay"></span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="text-xs bg-amber-100 text-amber-800 px-3 py-1 rounded-lg font-bold flex items-center gap-1">
+                            ⏱️ <span id="timerDisplay">00:00</span>
+                        </div>
+                        <div class="text-xs bg-indigo-100 text-indigo-800 px-3 py-1 rounded-lg font-bold">
+                            📝 ช่องเติม: <span id="progressDisplay">0/20</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Story Paragraph Card -->
+                <div class="glass-card rounded-3xl p-5 sm:p-8 shadow-xl">
+                    <div id="storyContainer" class="text-slate-800 text-base sm:text-lg leading-loose space-y-4 select-none">
+                        <!-- Dynamic generated story blocks with drop zones -->
+                    </div>
+                </div>
+
+                <!-- Word Bank Card -->
+                <div class="glass-card rounded-3xl p-4 sm:p-6 shadow-xl bg-white/90">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500">คำศัพท์ตัวเลือก (แตะเพื่อเติม หรือลากวาง)</h3>
+                        <span class="text-xs text-purple-600 font-semibold" id="wordBankCount">30 คำ</span>
+                    </div>
+                    <div id="wordBankContainer" class="flex flex-wrap gap-2 min-h-[90px] p-2 bg-slate-50/80 rounded-2xl border border-dashed border-slate-300">
+                        <!-- Dynamic Word Bank items -->
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="flex justify-end gap-3 pb-2">
+                    <button onclick="resetGameAnswers()" class="px-5 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-sm transition">
+                        🔄 เริ่มทำใหม่
+                    </button>
+                    <button onclick="submitGameAnswers()" class="px-8 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/30 text-sm transition transform active:scale-95 flex items-center gap-2">
+                        <span>✅ ส่งคำตอบ</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- VIEW 3: RESULT SCREEN -->
+            <div id="viewResult" class="w-full max-w-lg hidden glass-card rounded-3xl p-6 sm:p-8 shadow-2xl text-center">
+                <div id="resultEmoji" class="text-6xl mb-2 animate-bounce">🏆</div>
+                <h2 class="text-2xl font-bold text-slate-900" id="resultTitle">สรุปผลการทดสอบ</h2>
+                <p class="text-sm text-slate-500 mt-1" id="resultSubtitle">ยอดเยี่ยมมากครับ!</p>
+
+                <div class="grid grid-cols-2 gap-4 my-6">
+                    <div class="bg-purple-50 p-4 rounded-2xl border border-purple-100">
+                        <div class="text-xs text-purple-600 font-semibold uppercase">คะแนนที่ได้</div>
+                        <div class="text-3xl font-extrabold text-purple-700 mt-1"><span id="finalScore">0</span><span class="text-base font-normal text-slate-500">/20</span></div>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded-2xl border border-amber-100">
+                        <div class="text-xs text-amber-600 font-semibold uppercase">เวลาที่ใช้</div>
+                        <div class="text-2xl font-extrabold text-amber-700 mt-1" id="finalTime">00:00</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button onclick="retryGame()" class="flex-1 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-md transition text-sm">
+                        🔄 เล่นอีกครั้ง
+                    </button>
+                    <button onclick="showLeaderboard()" class="flex-1 py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition text-sm">
+                        🏆 กระดานคะแนน
+                    </button>
+                    <button onclick="goHome()" class="flex-1 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition text-sm">
+                        🏠 หน้าแรก
+                    </button>
+                </div>
+            </div>
+
+            <!-- VIEW 4: LEADERBOARD SCREEN -->
+            <div id="viewLeaderboard" class="w-full max-w-2xl hidden glass-card rounded-3xl p-6 sm:p-8 shadow-2xl">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">🏆 กระดานคะแนนสูงสุด (Top 50)</h2>
+                        <p class="text-xs text-slate-500">วิชาสังคมศึกษา ส33102 ม.6 โรงเรียนแม่จันวิทยาคม</p>
+                    </div>
+                    <button onclick="goHome()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-xs transition">
+                        🏠 กลับหน้าแรก
+                    </button>
+                </div>
+
+                <div id="leaderboardLoading" class="text-center py-12 text-slate-500">
+                    <div class="inline-block animate-spin text-3xl mb-2">⏳</div>
+                    <p class="text-sm">กำลังโหลดข้อมูลกระดานคะแนน...</p>
+                </div>
+
+                <div id="leaderboardContent" class="hidden overflow-x-auto max-h-[380px] overflow-y-auto pr-1">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-purple-100 text-purple-900 text-xs uppercase">
+                                <th class="p-3 rounded-l-xl">อันดับ</th>
+                                <th class="p-3">ชื่อ-นามสกุล</th>
+                                <th class="p-3">ชั้น/ห้อง</th>
+                                <th class="p-3 text-center">คะแนน</th>
+                                <th class="p-3 text-right rounded-r-xl">เวลา</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardTableBody" class="divide-y divide-slate-100">
+                            <!-- Rows inserted dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <button onclick="fetchLeaderboardData()" class="text-xs text-purple-600 hover:underline font-semibold">
+                        🔄 รีเฟรชข้อมูล
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="w-full text-center mt-4 text-xs text-slate-300/80">
+            &copy; 2026 โรงเรียนแม่จันวิทยาคม &bull; พัฒนาเพื่อการเรียนรู้วิชาพุทธประวัติ
+        </footer>
+    </div>
+
+    <!-- Toast Modal / Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="glass-card p-6 rounded-3xl shadow-2xl text-center max-w-xs mx-4">
+            <div class="inline-block animate-spin text-4xl mb-3 text-purple-600">☸️</div>
+            <h4 class="text-base font-bold text-slate-900" id="loadingTitle">กำลังบันทึกคะแนน</h4>
+            <p class="text-xs text-slate-500 mt-1" id="loadingSubtitle">กรุณารอสักครู่...</p>
+        </div>
+    </div>
+
+    <!-- AUDIO SYNTHESIZER (Web Audio API - No external files) -->
+    <script>
+        let soundEnabled = true;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('soundStatus').innerText = soundEnabled ? "เปิดเสียง" : "ปิดเสียง";
+            if(soundEnabled && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            try {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+                if (type === 'pop') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+                    osc.start(now);
+                    osc.stop(now + 0.1);
+                } else if (type === 'success') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                    osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                } else if (type === 'error') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, now);
+                    osc.frequency.setValueAtTime(150, now + 0.15);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                }
+            } catch(e) {}
+        }
+    </script>
+
+    <!-- GAME CONTENT & LOGIC -->
+    <script>
+        // พุทธประวัติเนื้อหา 20 ช่องว่าง
+        // ตัวเลือกคำตอบถูกต้อง 20 คำ + ตัวลวง 10 คำ = รวม 30 คำใน Word Bank
+        const buddhaStoryData = {
+            parts: [
+                "เจ้าชายสิทธัตถะประสูติ ณ {BLANK_0} เมื่อวันเพ็ญเดือน 6 ก่อนพุทธศักราช 80 ปี ทรงเป็นพระราชโอรสของพระเจ้าสุทโธทนะและพระนางสิริมหามายา เมื่อประสูติได้ไม่นาน ทรงดำเนินไป 7 ก้าวและมี {BLANK_1} รองรับ เมื่อพระชนมายุ 16 พรรษา ทรงอภิเษกสมรสกับ {BLANK_2} และมีพระราชโอรสพระนามว่า {BLANK_3}",
+                "เมื่อพระชนมายุ 29 พรรษา ได้ทอดพระเนตรเห็น {BLANK_4} 4 ประการ ได้แก่ คนแก่ คนเจ็บ คนตาย และสมณะ ซึ่งเป็นแรงบันดาลใจให้ทรงตัดสินพระทัย {BLANK_5} ออกผนวชเพื่อแสวงหาทางพ้นทุกข์ ทรงบำเพ็ญทุกรกิริยาและทดลองวิธีต่างๆ จนกระทั่งทรงค้นพบ {BLANK_6} ซึ่งเป็นหนทางสายกลางที่ไม่ตึงหรือหย่อนจนเกินไป",
+                "ในวันเพ็ญเดือน 6 ณ ใต้ต้น {BLANK_7} ริมฝั่งแม่น้ำเนรัญชรา ทรงบรรลุ {BLANK_8} เป็นพระสัมมาสัมพุทธเจ้า หลังจากนั้นทรงแสดงธรรมโปรดปัญจวัคคีย์ ณ ป่าอิสิปตนมฤคทายวัน เรียกว่า {BLANK_9} ซึ่งมีใจความสำคัญเกี่ยวกับ {BLANK_10} 4 และมรรคมีองค์ 8",
+                "ตลอดระยะเวลา 45 พรรษาหลังตรัสรู้ พระพุทธองค์ทรงจาริกเผยแผ่พระพุทธศาสนาไปยังแว่นแคว้นต่างๆ มีพระสาวกสำคัญคอยช่วยเหลือ เช่น {BLANK_11} เป็นอัครสาวกเบื้องขวา และ {BLANK_12} เป็นอัครสาวกเบื้องซ้าย ทรงแต่งตั้งพระนางปชาบดีกุตเทรีให้บวชเป็น {BLANK_13} รูปแรกในพระพุทธศาสนา",
+                "ในบั้นปลายพระชนมายุ ทรงเผชิญเหตุการณ์สำคัญ เช่น การลอบปลงพระชนม์ของ {BLANK_14} ที่ร่วมมือกับพระเจ้าอชาตศัตรู แต่ไม่สำเร็จ พระพุทธองค์ทรงแสดงธรรมและให้อภัย ทรงประชวรด้วยโรค {BLANK_15} ก่อนเสด็จดับขันธ์ปรินิพพาน",
+                "เหตุการณ์ปรินิพพานเกิดขึ้น ณ {BLANK_16} เมืองกุสินารา ในวันเพ็ญเดือน 6 ภายใต้ {BLANK_17} แฝด ก่อนเสด็จดับขันธ์ได้ทรงแสดงธรรมโปรด {BLANK_18} เป็นสาวกองค์สุดท้าย และหลังปรินิพพานได้มีการจัดพิธี {BLANK_19} และแบ่งพระบรมสารีริกธาตุให้แก่แคว้นต่างๆ"
+            ],
+            blanks: [
+                { id: 0, answer: "สวนลุมพินีวัน" },
+                { id: 1, answer: "ดอกบัว" },
+                { id: 2, answer: "พระนางพิมพา" },
+                { id: 3, answer: "พระราหุล" },
+                { id: 4, answer: "เทวทูต" },
+                { id: 5, answer: "เสด็จออกบรรพชา" },
+                { id: 6, answer: "มัชฌิมาปฏิปทา" },
+                { id: 7, answer: "ศรีมหาโพธิ์" },
+                { id: 8, answer: "อนุตรสัมมาสัมโพธิญาณ" },
+                { id: 9, answer: "ปฐมเทศนา" },
+                { id: 10, answer: "อริยสัจ" },
+                { id: 11, answer: "พระสารีบุตร" },
+                { id: 12, answer: "พระโมคคัลลานะ" },
+                { id: 13, answer: "ภิกษุณี" },
+                { id: 14, answer: "พระเทวทัต" },
+                { id: 15, answer: "ลงพระโลหิต" },
+                { id: 16, answer: "สาลวโนทยาน" },
+                { id: 17, answer: "ต้นรัง" },
+                { id: 18, answer: "สุภัททปริพลาชก" },
+                { id: 19, answer: "ถวายเพลิงพระพุทธสรีระ" }
+            ],
+            distractors: [
+                "พระมหากัสสปะ", "โสฬสปัญหา", "วัดเชตวันมหาวิหาร", "พระอานนท์", 
+                "แคว้นมคธ", "นางสุชาดา", "การสังคายนา", "พระเจ้าพิมพิสาร", 
+                "ธัมมจักกัปปวัตตนสูตร", "นิพพานสุข"
+            ]
+        };
+
+        let currentUser = { fullName: "", classroom: "", studentNo: "" };
+        let timerInterval = null;
+        let secondsElapsed = 0;
+        let userAnswers = {}; // blankId -> word string
+        let shuffledWordBank = [];
+        let selectedWordFromBank = null; // สำหรับโหมดแตะเลือกจาก Word Bank
+
+        function handleStartGame(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('inputFullName').value.trim();
+            const classroom = document.getElementById('inputClassroom').value.trim();
+            const studentNo = document.getElementById('inputStudentNo').value.trim();
+
+            if (!fullName || !classroom || !studentNo) return;
+
+            currentUser = { fullName, classroom, studentNo };
+            document.getElementById('hudUserDisplay').innerText = `${fullName} (${classroom} เลขที่ ${studentNo})`;
+
+            switchView('viewGame');
+            initGameSession();
+        }
+
+        function switchView(viewId) {
+            ['viewHome', 'viewGame', 'viewResult', 'viewLeaderboard'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(viewId).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function initGameSession() {
+            userAnswers = {};
+            selectedWordFromBank = null;
+            secondsElapsed = 0;
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
+                const secs = String(secondsElapsed % 60).padStart(2, '0');
+                document.getElementById('timerDisplay').innerText = `${mins}:${secs}`;
+            }, 1000);
+
+            // สร้าง Word Bank (20 คำตอบ + 10 ตัวลวง = 30 คำ) สุ่มตำแหน่ง
+            const allWords = [
+                ...buddhaStoryData.blanks.map(b => b.answer),
+                ...buddhaStoryData.distractors
+            ];
+            shuffledWordBank = shuffleArray([...allWords]);
+
+            renderStory();
+            renderWordBank();
+            updateProgress();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function renderStory() {
+            const container = document.getElementById('storyContainer');
+            let html = '';
+
+            buddhaStoryData.parts.forEach((part, partIdx) => {
+                let formattedPart = part;
+                // แทนที่ {BLANK_x} ด้วย Drop Zone / Input Box
+                for (let i = 0; i < buddhaStoryData.blanks.length; i++) {
+                    const tag = `{BLANK_${i}}`;
+                    if (formattedPart.includes(tag)) {
+                        const currentVal = userAnswers[i] || "";
+                        const zoneHtml = `<span class="inline-block mx-1 my-1 align-middle">
+                            <span id="dropzone-${i}" 
+                                ondragover="allowDrop(event)" 
+                                ondragleave="dragLeave(event)"
+                                ondrop="dropWord(event, ${i})" 
+                                onclick="clickDropZone(${i})"
+                                class="inline-flex items-center justify-center px-3 py-1.5 min-w-[110px] min-h-[36px] bg-slate-100 hover:bg-slate-200 border-2 border-dashed border-purple-300 rounded-xl text-sm font-semibold text-purple-900 cursor-pointer transition shadow-inner">
+                                ${currentVal ? currentVal : '<span class="text-slate-400 font-normal text-xs">[ช่องที่ ' + (i+1) + ']</span>'}
+                            </span>
+                        </span>`;
+                        formattedPart = formattedPart.replace(tag, zoneHtml);
+                    }
+                }
+                html += `<p class="mb-4">${formattedPart}</p>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function renderWordBank() {
+            const container = document.getElementById('wordBankContainer');
+            let html = '';
+
+            shuffledWordBank.forEach((word, idx) => {
+                // เช็คว่าคำนี้ถูกใช้ไปหรือยัง
+                const isUsed = Object.values(userAnswers).includes(word);
+                if (isUsed) {
+                    html += `<span class="px-3 py-1.5 bg-slate-200/60 text-slate-400 text-xs font-medium rounded-xl border border-slate-200 select-none line-through">${word}</span>`;
+                } else {
+                    const isSelected = selectedWordFromBank === word;
+                    const selectClass = isSelected ? 'bg-purple-600 text-white ring-4 ring-purple-300 scale-105' : 'bg-white hover:bg-purple-50 text-purple-700 border border-purple-200 shadow-sm';
+                    html += `<span draggable="true" 
+                        ondragstart="dragStart(event, '${word}')" 
+                        onclick="selectWordFromBank('${word}')"
+                        class="px-3.5 py-1.5 ${selectClass} text-xs font-semibold rounded-xl cursor-pointer transition inline-block select-none transform active:scale-95">
+                        ${word}
+                    </span>`;
+                }
+            });
+
+            container.innerHTML = html;
+            document.getElementById('wordBankCount').innerText = `${shuffledWordBank.filter(w => !Object.values(userAnswers).includes(w)).length} / ${shuffledWordBank.length} คำ`;
+        }
+
+        // Drag and Drop Handlers
+        function dragStart(ev, word) {
+            ev.dataTransfer.setData("text/plain", word);
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+            ev.currentTarget.classList.add('bg-purple-100', 'border-purple-500');
+        }
+
+        function dragLeave(ev) {
+            ev.currentTarget.classList.remove('bg-purple-100', 'border-purple-500');
+        }
+
+        function dropWord(ev, blankId) {
+            ev.preventDefault();
+            const word = ev.dataTransfer.getData("text/plain");
+            if (word) {
+                assignWordToBlank(blankId, word);
+            }
+        }
+
+        // Tap Selection Handlers (สำหรับมือถือ)
+        function selectWordFromBank(word) {
+            playSound('pop');
+            if (selectedWordFromBank === word) {
+                selectedWordFromBank = null;
+            } else {
+                selectedWordFromBank = word;
+            }
+            renderWordBank();
+        }
+
+        function clickDropZone(blankId) {
+            playSound('pop');
+            if (selectedWordFromBank) {
+                // เติมคำที่เลือกไว้ลงช่อง
+                assignWordToBlank(blankId, selectedWordFromBank);
+                selectedWordFromBank = null;
+            } else if (userAnswers[blankId]) {
+                // ถ้ามีคำอยู่แล้ว ให้เอาออกคืน Word Bank
+                delete userAnswers[blankId];
+                renderStory();
+                renderWordBank();
+                updateProgress();
+            }
+        }
+
+        function assignWordToBlank(blankId, word) {
+            // ถ้าคำนี้เคยถูกเติมในช่องอื่น ให้ลบออกจากช่องเดิมก่อน
+            for (let id in userAnswers) {
+                if (userAnswers[id] === word) {
+                    delete userAnswers[id];
+                }
+            }
+            userAnswers[blankId] = word;
+            playSound('pop');
+            renderStory();
+            renderWordBank();
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const filledCount = Object.keys(userAnswers).length;
+            document.getElementById('progressDisplay').innerText = `${filledCount}/20`;
+        }
+
+        function resetGameAnswers() {
+            userAnswers = {};
+            selectedWordFromBank = null;
+            renderStory();
+            renderWordBank();
+            updateProgress();
+            playSound('pop');
+        }
+
+        function submitGameAnswers() {
+            const filledCount = Object.keys(userAnswers).length;
+            if (filledCount < 20) {
+                showToastMessage("กรุณาเติมคำให้ครบทุกช่องก่อนส่งคำตอบครับ", "error");
+                return;
+            }
+
+            if (timerInterval) clearInterval(timerInterval);
+
+            // ตรวจคำตอบ
+            let score = 0;
+            buddhaStoryData.blanks.forEach(b => {
+                const userAns = (userAnswers[b.id] || "").trim();
+                const dropZoneElem = document.getElementById(`dropzone-${b.id}`);
+                if (userAns === b.answer) {
+                    score++;
+                    if (dropZoneElem) {
+                        dropZoneElem.className = "inline-flex items-center justify-center px-3 py-1.5 min-w-[110px] min-h-[36px] bg-emerald-100 border-2 border-emerald-500 rounded-xl text-sm font-bold text-emerald-800 shadow-sm";
+                    }
+                } else {
+                    if (dropZoneElem) {
+                        dropZoneElem.className = "inline-flex items-center justify-center px-3 py-1.5 min-w-[110px] min-h-[36px] bg-rose-100 border-2 border-rose-500 rounded-xl text-sm font-bold text-rose-800 shadow-sm";
+                    }
+                }
+            });
+
+            const timeSpent = secondsElapsed;
+            const mins = String(Math.floor(timeSpent / 60)).padStart(2, '0');
+            const secs = String(timeSpent % 60).padStart(2, '0');
+
+            // บันทึกคะแนนผ่าน google.script.run
+            saveScoreToBackend(score, timeSpent);
+
+            // แสดงหน้าผลลัพธ์
+            setTimeout(() => {
+                document.getElementById('finalScore').innerText = score;
+                document.getElementById('finalTime').innerText = `${mins}:${secs}`;
+                
+                if (score >= 18) {
+                    document.getElementById('resultEmoji').innerText = "🌟";
+                    document.getElementById('resultTitle').innerText = "สุดยอดนักเรียนดีเด่น!";
+                    document.getElementById('resultSubtitle').innerText = "มีความรู้เรื่องพุทธประวัติยอดเยี่ยมมากครับ";
+                    confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+                    playSound('success');
+                } else if (score >= 12) {
+                    document.getElementById('resultEmoji').innerText = "🎉";
+                    document.getElementById('resultTitle').innerText = "ทำได้ดีมาก!";
+                    document.getElementById('resultSubtitle').innerText = "ผ่านเกณฑ์ความรู้พุทธประวัติแล้วครับ";
+                    playSound('success');
+                } else {
+                    document.getElementById('resultEmoji').innerText = "💪";
+                    document.getElementById('resultTitle').innerText = "พยายามอีกนิดนะ!";
+                    document.getElementById('resultSubtitle').innerText = "ลองทบทวนเนื้อหาพุทธประวัติแล้วเล่นใหม่อีกครั้งได้เลย";
+                    playSound('error');
+                }
+
+                switchView('viewResult');
+            }, 800);
+        }
+
+        function saveScoreToBackend(score, timeSpent) {
+            const payload = {
+                fullName: currentUser.fullName,
+                classroom: currentUser.classroom,
+                studentNo: String(currentUser.studentNo),
+                score: score,
+                timeSpent: timeSpent
+            };
+
+            // 1. ถ้ารันอยู่บน Google Apps Script โดยตรง ใช้ google.script.run
+            if (typeof google !== 'undefined' && google.script && google.script.run) {
+                google.script.run
+                    .withSuccessHandler(res => {
+                        if (!res.success) {
+                            console.error("Save score error:", res.message);
+                        }
+                    })
+                    .withFailureHandler(err => {
+                        console.error("Save score failure:", err);
+                    })
+                    .saveScore(payload);
+            } 
+            // 2. ถ้ารันไฟล์ HTML จากภายนอก ใช้ Fetch API ยิงไปที่ CONFIG.webAppUrl
+            else if (CONFIG.webAppUrl) {
+                fetch(CONFIG.webAppUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'saveScore', data: payload })
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if (!res.success) console.error("Save score error:", res.message);
+                })
+                .catch(err => console.error("Fetch save score error:", err));
+            }
+        }
+
+        function retryGame() {
+            switchView('viewGame');
+            initGameSession();
+        }
+
+        function goHome() {
+            switchView('viewHome');
+        }
+
+        function showLeaderboard() {
+            switchView('viewLeaderboard');
+            fetchLeaderboardData();
+        }
+
+        function fetchLeaderboardData() {
+            document.getElementById('leaderboardLoading').classList.remove('hidden');
+            document.getElementById('leaderboardContent').classList.add('hidden');
+
+            // 1. ถ้ารันอยู่บน Google Apps Script โดยตรง ใช้ google.script.run
+            if (typeof google !== 'undefined' && google.script && google.script.run) {
+                google.script.run
+                    .withSuccessHandler(data => {
+                        renderLeaderboardTable(data);
+                    })
+                    .withFailureHandler(err => {
+                        document.getElementById('leaderboardLoading').innerHTML = `<p class="text-rose-500 text-sm">ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง</p>`;
+                    })
+                    .getLeaderboard();
+            } 
+            // 2. ถ้ารันไฟล์ HTML จากภายนอก ใช้ Fetch API ดึงจาก CONFIG.webAppUrl
+            else if (CONFIG.webAppUrl) {
+                fetch(`${CONFIG.webAppUrl}?action=getLeaderboard`)
+                    .then(res => res.json())
+                    .then(data => {
+                        renderLeaderboardTable(data);
+                    })
+                    .catch(err => {
+                        console.error("Fetch leaderboard error:", err);
+                        document.getElementById('leaderboardLoading').innerHTML = `<p class="text-rose-500 text-sm">ไม่สามารถโหลดข้อมูลได้ กรุณาตรวจสอบการตั้งค่า Deploy</p>`;
+                    });
+            }
+        }
+
+        function renderLeaderboardTable(data) {
+            const tbody = document.getElementById('leaderboardTableBody');
+            tbody.innerHTML = '';
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">ยังไม่มีประวัติการทำคะแนน</td></tr>`;
+            } else {
+                data.forEach((row, index) => {
+                    const rank = index + 1;
+                    let rankBadge = `<span class="font-semibold text-slate-600">#${rank}</span>`;
+                    if (rank === 1) rankBadge = `<span class="bg-amber-400 text-white font-bold px-2 py-0.5 rounded-lg text-xs shadow-sm">🥇 1</span>`;
+                    else if (rank === 2) rankBadge = `<span class="bg-slate-300 text-slate-800 font-bold px-2 py-0.5 rounded-lg text-xs shadow-sm">🥈 2</span>`;
+                    else if (rank === 3) rankBadge = `<span class="bg-amber-700 text-white font-bold px-2 py-0.5 rounded-lg text-xs shadow-sm">🥉 3</span>`;
+
+                    // ไฮไลต์แถวของผู้เล่นปัจจุบัน
+                    const isCurrent = currentUser.fullName && row.fullName === currentUser.fullName && row.classroom === currentUser.classroom;
+                    const rowBg = isCurrent ? 'bg-purple-50 font-bold border-l-4 border-purple-600' : (index % 2 === 0 ? 'bg-white' : 'bg-slate-50/50');
+
+                    const mins = String(Math.floor(row.timeSpent / 60)).padStart(2, '0');
+                    const secs = String(row.timeSpent % 60).padStart(2, '0');
+
+                    const tr = document.createElement('tr');
+                    tr.className = `${rowBg} transition`;
+                    tr.innerHTML = `
+                        <td class="p-3">${rankBadge}</td>
+                        <td class="p-3 text-slate-900">${row.fullName}</td>
+                        <td class="p-3 text-slate-600">${row.classroom} (ล. ${row.studentNo})</td>
+                        <td class="p-3 text-center font-bold text-purple-700">${row.score}/20</td>
+                        <td class="p-3 text-right font-mono text-slate-600 text-xs">${mins}:${secs}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('leaderboardLoading').classList.add('hidden');
+            document.getElementById('leaderboardContent').classList.remove('hidden');
+        }
+
+        function showToastMessage(msg, type) {
+            const overlay = document.getElementById('loadingOverlay');
+            document.getElementById('loadingTitle').innerText = type === 'error' ? "แจ้งเตือน" : "สำเร็จ";
+            document.getElementById('loadingSubtitle').innerText = msg;
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+
+            setTimeout(() => {
+                overlay.classList.remove('flex');
+                overlay.classList.add('hidden');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
